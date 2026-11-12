@@ -44,11 +44,6 @@ h1 em { color: #933b19; font-weight: 500; }
 #catalog { padding-top: 30px; scroll-margin-block-start: 12px; }
 .catalog-top, .discovery, .steps-head, .reader-toolbar, footer { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .catalog-top h2 { font: 500 clamp(2rem,3.2vw,3.2rem)/1.1 var(--serif); letter-spacing: -.045em; }
-.category-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
-.category-buttons button { min-height: 42px; padding: 9px 18px; border: 1px solid #c8b9a7; border-radius: 999px; background: var(--surface); color: var(--ink); font-weight: 650; }
-.category-buttons button:hover { border-color: var(--rust); }
-.category-buttons button[aria-pressed="true"] { background: var(--rust); border-color: var(--rust); color: #fff; }
-.category-buttons button:focus-visible { outline: 3px solid #c08062; outline-offset: 2px; }
 .search-box { display: flex; align-items: center; gap: 9px; width: min(36%,450px); padding: 0 13px; border: 1px solid #ada393; border-radius: 7px; background: var(--surface); }
 .search-box:focus-within { outline: 2px solid var(--rust); outline-offset: 1px; }
 .search-box input { width: 100%; min-height: 44px; border: none; background: transparent; outline: none; font-size: .98rem; }

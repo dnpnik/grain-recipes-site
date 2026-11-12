@@ -29,8 +29,8 @@
     tongue: "Говяжий язык",
     cabbage: "Капуста"
   };
-  const categories = { grains: ["rice", "buckwheat", "millet", "spelt", "sorghum", "peas", "oats"], meat: ["tongue"], poultry: ["chicken"] };
-  const categoryButtons = [...document.querySelectorAll("[data-category]")];
+  const categories = { grains: ["rice", "buckwheat", "millet", "spelt", "sorghum", "peas", "oats"], meat: ["tongue"], poultry: ["chicken"], other: ["eggs", "cabbage"] };
+  const categorySelect = byId("category-select");
   let selectedCategory = "all";
   const bookmarkIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6.5 4.5h11v16L12 17l-5.5 3.5z"/></svg>';
   const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
@@ -167,7 +167,7 @@
     byId("saved-count").textContent = saved.size;
     savedTab.setAttribute("aria-pressed", String(savedOnly));
     allTab.setAttribute("aria-pressed", String(!savedOnly));
-    categoryButtons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.category === selectedCategory)));
+    categorySelect.value = selectedCategory;
     moreButton.hidden = limit >= matches.length;
     moreButton.textContent = "Показать ещё " + Math.min(pageSize, Math.max(0, matches.length - limit));
     resetButton.hidden = !search.value && productSelect.value === "all" && methodSelect.value === "all" && selectedCategory === "all" && !chosenSpice;
@@ -278,11 +278,11 @@
 
   function rerun() { limit = pageSize; render(); }
   search.addEventListener("input", () => { chosenSpice = ""; rerun(); });
-  categoryButtons.forEach(button => button.addEventListener("click", () => {
-    selectedCategory = button.dataset.category;
+  categorySelect.addEventListener("change", () => {
+    selectedCategory = categorySelect.value;
     if (selectedCategory !== "all" && productSelect.value !== "all" && !categories[selectedCategory].includes(productSelect.value)) productSelect.value = "all";
     rerun();
-  }));
+  });
   productSelect.addEventListener("change", () => {
     if (selectedCategory !== "all" && productSelect.value !== "all" && !categories[selectedCategory].includes(productSelect.value)) selectedCategory = "all";
     rerun();
