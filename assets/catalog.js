@@ -29,6 +29,9 @@
     tongue: "Говяжий язык",
     cabbage: "Капуста"
   };
+  const categories = { grains: ["rice", "buckwheat", "millet", "spelt", "sorghum", "peas", "oats"], meat: ["tongue"], poultry: ["chicken"] };
+  const categoryButtons = [...document.querySelectorAll("[data-category]")];
+  let selectedCategory = "all";
   const bookmarkIcon = '<svg aria-hidden="true" viewBox="0 0 24 24" focusable="false" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M6.5 4.5h11v16L12 17l-5.5 3.5z"/></svg>';
   const entities = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
   const escapeHtml = value => String(value).replace(/[&<>"']/g, c => entities[c]);
@@ -122,6 +125,7 @@
     const matches = showcase.filter(entry =>
       (!savedOnly || saved.has(entry.recipe.title)) &&
       (!chosenSpice || entry.registrySpices.includes(chosenSpice)) &&
+      (selectedCategory === "all" || categories[selectedCategory].includes(entry.product)) &&
       (productSelect.value === "all" || productSelect.value === entry.product) &&
       (methodSelect.value === "all" || methodSelect.value === entry.method)
     );
@@ -163,9 +167,10 @@
     byId("saved-count").textContent = saved.size;
     savedTab.setAttribute("aria-pressed", String(savedOnly));
     allTab.setAttribute("aria-pressed", String(!savedOnly));
+    categoryButtons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.category === selectedCategory)));
     moreButton.hidden = limit >= matches.length;
     moreButton.textContent = "Показать ещё " + Math.min(pageSize, Math.max(0, matches.length - limit));
-    resetButton.hidden = !search.value && productSelect.value === "all" && methodSelect.value === "all";
+    resetButton.hidden = !search.value && productSelect.value === "all" && methodSelect.value === "all" && selectedCategory === "all" && !chosenSpice;
     const empty = byId("empty-state");
     empty.hidden = matches.length !== 0;
     empty.textContent = savedOnly && !saved.size
@@ -273,7 +278,15 @@
 
   function rerun() { limit = pageSize; render(); }
   search.addEventListener("input", () => { chosenSpice = ""; rerun(); });
-  productSelect.addEventListener("change", rerun);
+  categoryButtons.forEach(button => button.addEventListener("click", () => {
+    selectedCategory = button.dataset.category;
+    if (selectedCategory !== "all" && productSelect.value !== "all" && !categories[selectedCategory].includes(productSelect.value)) productSelect.value = "all";
+    rerun();
+  }));
+  productSelect.addEventListener("change", () => {
+    if (selectedCategory !== "all" && productSelect.value !== "all" && !categories[selectedCategory].includes(productSelect.value)) selectedCategory = "all";
+    rerun();
+  });
   methodSelect.addEventListener("change", rerun);
   moreButton.addEventListener("click", () => { limit += pageSize; render(true); });
   function clearFilters() {
@@ -281,6 +294,7 @@
     methodSelect.value = "all";
     search.value = "";
     chosenSpice = "";
+    selectedCategory = "all";
   }
   resetButton.addEventListener("click", () => { clearFilters(); rerun(); search.focus(); });
   function switchTab(toSaved) {

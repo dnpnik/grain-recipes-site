@@ -38,6 +38,12 @@
         <input id="recipe-search" type="search" autocomplete="off" placeholder="Найти блюдо или приправу" aria-label="Найти блюдо или приправу">
       </label>
     </div>
+    <div class="category-buttons" role="group" aria-label="Категория рецептов">
+      <button type="button" data-category="all" aria-pressed="true">Все</button>
+      <button type="button" data-category="grains" aria-pressed="false">Крупа</button>
+      <button type="button" data-category="meat" aria-pressed="false">Мясо</button>
+      <button type="button" data-category="poultry" aria-pressed="false">Птица</button>
+    </div>
     <div class="discovery">
       <label>Продукт <select id="product-select">
         <option value="all">Все продукты</option><option value="chicken">Курица</option><option value="tongue">Говяжий язык</option>
