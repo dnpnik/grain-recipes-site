@@ -67,7 +67,7 @@
     const name = products[product] || recipe.grain;
     const method = recipe.methodId || (["microwave", "airfryer"].includes(recipe.id) ? recipe.id : "base");
     const modes = { microwave: "Микроволновка", airfryer: "Аэрогриль", multicooker: "Мультиварка · тушение" };
-    const methodName = modes[method] || ({ chicken: "Духовка", eggs: "Сковорода" }[product] || "Плита");
+    const methodName = modes[method] || ({ chicken: "Духовка", tongue: "Духовка", eggs: "Сковорода" }[product] || "Плита");
     const aliases = { buckwheat: "греча гречи", oats: "овсянка", tongue: "говядина" };
     return {
       recipe, index, product, name, method, methodName,
